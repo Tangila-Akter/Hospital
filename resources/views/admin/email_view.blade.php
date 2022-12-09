@@ -1,72 +1,99 @@
-<x-app-layout>
-    <h1>admin</h1>
-    </x-app-layout>
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
-    <!--  meta tags -->
-    <base href="public">
+    <base href="/public">
     @include('admin.css')
-    <style>
-        body{
-          background: #191c24;
-          color: white;
-        }
-        a:link {
-          color: white;
-        text-decoration: none;
-      }
-      .text{
-            color: black !important;
-        }
-      </style>
+    <style type="text/css">
+    	label{
+    		display: inline-block;
+    		width: 200px;
+    	}
+    </style>
   </head>
   <body>
-   
-        <div class="container-fluid page-body-wrapper">
-          @if (session()->has('message'))
-            <div class="alert alert-success">
-<button type="button" class="close" data-dismiss="alert">x</button>
-{{ session()->has('message') }}
+    <div class="container-scroller">
+      
+      <!-- partial:partials/_sidebar.html -->
+      @include('admin.sidebar')
+      <!-- partial -->
+      @include('admin.navbar')
+        <!-- partial -->
+
+        
+
+
+      <div class="container-fluid page-body-wrapper">
+
+
+
+
+
+      	<div class="container" align="container" style="padding-top: 100px;">
+
+
+          <h1 style="text-align: center; font-size: 25px;">Send Email to {{$data->email}}</h1>
+
+          
+      		@if(session()->has('message'))
+      		<div class="alert alert-success">
+      			 
+      			{{session()->get('message')}}
+      		</div>
+
+      		@endif
+      		<form action="{{url('sendemail',$data->id)}}" method="post">
+      			@csrf
+      			<div style="padding: 15px;">
+      				<label>Greeting</label>
+      				 
+
+
+              <textarea type="text" style="color:black; width: 350px;" name="greeting" placeholder="wrtie a greeting" required></textarea>
+
+      			</div>
+      			<div style="padding: 15px;">
+      				<label>Body</label>
+      				 
+
+               <textarea type="text" style="color:black; width: 350px;" name="body" placeholder="wrtie email body text" required></textarea>
+
+
+      			</div>
+      			
+      			<div style="padding: 15px;">
+      				<label>Action Text</label>
+      				<input type="text" style="color:black;" name="actiontext" placeholder="button name" required>
+      			</div>
+            <div style="padding: 15px;">
+              <label>Action Url</label>
+              <input type="text" style="color:black;" name="actionurl" placeholder="give button url link" required>
             </div>
-          @endif
-            <form action="{{ url('sendemail', $data->id) }}" method="post" >
-                @csrf
+            <div style="padding: 15px;">
+              <label>End Part</label>
                
-                
-                <div>
-                   <label>Greeting</label>
-                   <input type="text" class="text" name="greeting"  placeholder="Write a greeting" >
-               </div>
-               <div>
-                   <label>Body</label>
-                   <input type="text" class="text" name="body"  placeholder="Phone number" >
-               </div>
-               <div>
-                <label>Action URL</label>
-                <input type="text" class="text" name="actionurl"  placeholder="Action URL" >
+
+               <textarea type="text" style="color:black; width: 350px;" name="endpart" placeholder="wrtie email body text" required></textarea>
             </div>
-               
-               <div>
-                   <label>Action text</label>
-                   <input type="text" class="text" name="actiontext"  placeholder="Action text" >
-                   
-               </div>
-               <div>
-                <label>End part</label>
-                <input type="text" class="text" name="endpart"  placeholder="End part" >
-                
-            </div>
-               <div>
-                    
-                <input  class="btn btn-primary" style="background-color: #2798bb; color:white;" type="submit" value="Save">
-            </div>
-            </form>
-        </div>
+      			<div style="padding: 15px;">
+      				<input type="submit" class="btn btn-success">
+      			</div>
+      		</form>
+      	</div>
+      </div>
+          
+    </div>
     <!-- container-scroller -->
-    <!-- plugins:js -->
     @include('admin.script')
-    <!-- End custom js for this page -->
+
+    <script type="text/javascript">
+      
+      $("document").ready(function(){
+    setTimeout(function(){
+       $("div.alert").remove();
+    }, 4000 ); // 3 secs
+
+});
+    </script>
 
   </body>
 </html>

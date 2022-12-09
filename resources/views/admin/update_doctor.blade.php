@@ -1,76 +1,76 @@
-<x-app-layout>
-    <h1>admin</h1>
-    </x-app-layout>
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
-    <!--  meta tags -->
-    <base href="public">
+    <base href="/public">
     @include('admin.css')
-    <style>
-        body{
-          background: #191c24;
-          color: white;
-        }
-        a:link {
-          color: white;
-        text-decoration: none;
-      }
-      .text{
-            color: black !important;
-        }
-      </style>
   </head>
   <body>
-   
-        <div class="container-fluid page-body-wrapper">
-          @if (session()->has('message'))
-            <div class="alert alert-success">
-<button type="button" class="close" data-dismiss="alert">x</button>
-{{ session()->has('message') }}
-            </div>
+    <div class="container-scroller">
+       
+      <!-- partial:partials/_sidebar.html -->
+      @include('admin.sidebar')
+      <!-- partial -->
+      @include('admin.navbar')
+        <!-- partial -->
+      <div class="container-fluid page-body-wrapper">
+
+
+        
+        <div class="container" align="container" style="padding-top: 100px;">
+          @if(session()->has('message'))
+          <div class="alert alert-success">
+            
+            {{session()->get('message')}}
+          </div>
+
           @endif
-            <form action="{{ url('editdoctor', $data->id) }}" method="post" enctype="multipart/form-data">
-                @csrf
-               
-                
-                <div>
-                   <label>Doctor name</label>
-                   <input type="text" class="text" name="name" value="{{$data->name }}" placeholder="Write a name" >
-               </div>
-               <div>
-                   <label>Phone number</label>
-                   <input type="text" class="text" name="phone" value="{{$data->phone }}" placeholder="Phone number" >
-               </div>
-               <div>
-                <label>Speciality</label>
-                <select class="text" name="speciality" value="{{$data->speciality }}">
-                    <option style="color:black;">--select--</option>
-                    <option value="skin" style="color:black;">skin</option>
-                    <option value="heart" style="color:black;">heart</option>
-                    <option value="eye" style="color:black;">eye</option>
-                    <option value="nose" style="color:black;">nose</option>
-                </select>
+          <form action="{{url('editdoctor',$data->id)}}" method="post" enctype="multipart/form-data">
+            @csrf
+            <div style="padding: 15px;">
+              <label>Doctor Name</label>
+              <input type="text" style="color:black;" name="name" value="{{$data->name}}">
             </div>
-               <div>
-                   <label>Image</label>
-                   <input type="file" name="file" >
-               </div>
-               <div>
-                   <label>Room no</label>
-                   <input type="text" class="text" name="room" value="{{$data->room }}" placeholder="Room no" >
-                   <div>
-                    
-                       <input  class="btn btn-primary" style="background-color: #2798bb; color:white;" type="submit" value="Save">
-                   </div>
-               </div>
-                
-            </form>
+            <div style="padding: 15px;">
+              <label>Phone</label>
+              <input type="number" style="color:black;" name="phone" value="{{$data->phone}}" required>
+            </div>
+            <div style="padding: 15px;">
+              <label>Speciality</label>
+              <input style="color: black;" type="text" name="speciality" value="{{$data->speciality}}">
+            </div>
+            <div style="padding: 15px;">
+              <label>Room No</label>
+              <input type="text" style="color:black;" name="room" value="{{$data->room}}" required>
+            </div>
+            <div style="padding: 15px;">
+              <label>Old Image</label>
+              <img height="200" width="200" src="doctorimage/{{$data->image}}">
+            </div>
+            <div style="padding: 15px;">
+              <label>Change Image</label>
+              <input type="file" name="file">
+            </div>
+            <div style="padding: 15px;">
+              <input type="submit" class="btn btn-success">
+            </div>
+          </form>
         </div>
+      </div>  
+    </div>
     <!-- container-scroller -->
-    <!-- plugins:js -->
     @include('admin.script')
-    <!-- End custom js for this page -->
+
+
+    <script type="text/javascript">
+      
+      $("document").ready(function(){
+    setTimeout(function(){
+       $("div.alert").remove();
+    }, 4000 ); // 3 secs
+
+});
+    </script>
+
 
   </body>
 </html>

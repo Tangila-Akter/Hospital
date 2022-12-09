@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Doctor;
 use App\Models\Appointment;
 use Notification;
@@ -10,98 +11,111 @@ use App\Notifications\SendEmailNotification;
 
 class AdminController extends Controller
 {
-    public function addview()
-    {
-        return view('admin.add_doctor'); 
+    public function addview(){
+        if(Auth::id()){
+            if(Auth::User()->usertype==1){
+                return view('admin.add_doctor');
+            }
+            else{
+                return redirect()->back();
+            }
+        }
+        else{
+            return redirect('login');
+        }
+        
     }
-    public function upload(Request $request)
-    {
-        $doctor = new doctor;
-        $image=$request->image;
-         $imagename=time().'.'.$image->getClientOriginalExtension() ;
-         $request->image->move('doctorimage',$imagename);
-         $doctor->image=$imagename;
-         $doctor->name=$request->name;
-         $doctor->phone=$request->phone;
-         $doctor->speciality=$request->speciality;
-         $doctor->room=$request->room;
-         $doctor->save();
- 
-         return redirect()->back()->with('message', 'Doctor added successfully'); 
+    public function upload(Request $request){
+        $doctor = new Doctor;
+        $image=$request->file;
+        $imagename=time().'.'.$image->getClientOriginalExtension();
+        $request->file->move('doctorimage',$imagename);
+        $doctor->image=$imagename;
+        $doctor->name=$request->name;
+        $doctor->phone=$request->phone;
+        $doctor->room=$request->room;
+        $doctor->speciality=$request->speciality;
+        $doctor->save();
+        return redirect()->back()->with('message','Doctor Added Successfully');
     }
-    public function showappointment()
-    {
-        $data=appointment::all();
-        return view('admin.showappointment',compact('data'));
+    public function showappointment(){
+        if(Auth::id()){
+            if(Auth::User()->usertype==1){
+                $data = Appointment::orderBy('id', 'DESC')->get();
+                return view('admin.showappointment',compact('data'));
+            }
+            else{
+                return redirect()->back();
+            }
+        }
+        else{
+            return redirect('login');
+        }
+        
     }
-    public function approved($id)
-     {
-         $data=appointment::find($id);
-         $data->status='approved';
-         $data->save();
-         return redirect()->back();
+    public function approved($id){
+        $data= Appointment::find($id);
+        $data->status='approved';
+        $data->save();
+        return redirect()->back();
+    }
+    public function canceled($id){
 
-     }
-     public function canceled($id)
-     {
-        $data=appointment::find($id);
+        $data= Appointment::find($id);
         $data->status='Canceled';
         $data->save();
-         return redirect()->back();
-
-     }
-     public function showdoctor()
-     {
-        $data=doctor::all();
+        return redirect()->back();
+    }
+    public function showdoctor(){
+        $data=Doctor::all();
         return view('admin.showdoctor',compact('data'));
-     }
-     public function deletedoctor($id)
-     {
-         $data=doctor::find($id);
-         $data->delete();
-         return redirect()->back();
-     }
-     public function updatedoctor($id)
-     {
-        $data=doctor::find($id);
+    }
+    public function deletedoctor($id){
+        $data=Doctor::find($id);
+        $data->delete();
+        return redirect()->back()->with('message','Doctor Data Deleted Successfully');
+    }
+    public function updatedoctor($id){
+        $data = Doctor::find($id);
+
         return view('admin.update_doctor',compact('data'));
-     }
-     public function editdoctor(Request $request, $id)
-     {
-        $doctor=doctor::find($id);
+    }
+    public function editdoctor(Request $request, $id){
+        $doctor= Doctor::find($id);
+        $doctor->name=$request->name;
+        $doctor->phone=$request->phone;
+        $doctor->speciality=$request->speciality;
+        $doctor->room=$request->room;
+
         $image=$request->file;
-        if($image)
-        {
-            $imagename=time().'.'.$image->getClientOriginalExtension() ;
+
+        if($image){
+
+            $imagename=time().'.'.$image->getClientOriginalExtension();
             $request->file->move('doctorimage',$imagename);
             $doctor->image=$imagename;
         }
-         
-         $doctor->name=$request->name;
-         $doctor->phone=$request->phone;
-         $doctor->speciality=$request->speciality;
-         $doctor->room=$request->room;
-         $doctor->save();
- 
-         return redirect()->back()->with('message', 'Doctor updated successfully');
-     }
-     public function emailview($id)
-     {
-        $data=appointment::find($id);
-         return view('admin.email_view',compact('data'));
-     }
-     public function sendemail(Request $request, $id)
-     {
-        $data=appointment::find($id);
+
+        $doctor->save();
+        return redirect()->back()->with('message','Doctor Details Updated Successfully');
+        
+    }
+    public function emailview($id){
+        $data=Appointment::find($id);
+        return view('admin.email_view',compact('data'));
+    }
+    public function sendemail(Request $request, $id){
+        $data=Appointment::find($id);
         $details=[
-            'greeting'=> $request->greeting,
-        'body'=> $request->body,
-        'actiontext'=> $request->actiontext,
-        'actionurl' => $request->actionurl,
-        'endpart' => $request->endpart
+            'greeting' => $request->greeting,
+            'body' => $request->body,
+            'actiontext' => $request->actiontext,
+            'actionurl' => $request->actionurl,
+            'endpart' => $request->endpart
+
         ];
-            
         Notification::send($data, new SendEmailNotification($details));
-        return redirect()->back()->with('message', 'Email send successfully');
-     }
+
+        return redirect()->back()->with('message','Email send is Successful');
+    }
 }

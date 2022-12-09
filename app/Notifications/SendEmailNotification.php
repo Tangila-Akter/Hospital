@@ -10,7 +10,9 @@ use Illuminate\Notifications\Notification;
 class SendEmailNotification extends Notification
 {
     use Queueable;
-private $details;
+
+    private $details;
+
     /**
      * Create a new notification instance.
      *

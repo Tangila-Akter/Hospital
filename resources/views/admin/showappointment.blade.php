@@ -1,63 +1,53 @@
-<x-app-layout>
-    <h1>admin</h1>
-    </x-app-layout>
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- Required meta tags -->
     @include('admin.css')
   </head>
   <body>
     <div class="container-scroller">
-      
+       
       <!-- partial:partials/_sidebar.html -->
       @include('admin.sidebar')
       <!-- partial -->
       @include('admin.navbar')
         <!-- partial -->
-        <div class="container-fluid page-body-wrapper">
-<div align="center" style="padding-top:100px;">
-<table>
-<tr style="background-color: black;">
-    <th style="padding: 10px;">Customer name</th>
-    <th style="padding: 10px;">Email</th>
-    <th style="padding: 10px;">Phone</th>
-    <th style="padding: 10px;">Doctor name</th>
-    <th style="padding: 10px;">Date</th>
-    <th style="padding: 10px;">Message</th>
-    <th style="padding: 10px;">Status</th>
-    <th style="padding: 10px;">Approve</th>
-    <th style="padding: 10px;">Cancel</th>
-    <th style="padding: 10px;">Send Mail</th>
-</tr>
-@foreach ($data as $appoint)
-<tr align="center" style="color: wheat;">
-    <td>{{ $appoint->name }}</td>
-    <td>{{ $appoint->email }}</td>
-    <td>{{ $appoint->phone }}</td>
-    <td>{{ $appoint->doctor }}</td>
-    <td>{{ $appoint->date }}</td>
-    <td>{{ $appoint->message }}</td>
-    <td>{{ $appoint->status }}</td>
-    <td>
-<a class="btn btn-success" href="{{ url('approved',$appoint->id) }}">Approved</a>
-    </td>
-    <td>
-        <a class="btn btn-danger" href="{{ url('canceled',$appoint->id )}}">Canceled</a>
-    </td>
-    <td>
-      <a class="btn btn-primary" href="{{ url('emailview',$appoint->id )}}">Send Mail</a>
-  </td>
-</tr>
-@endforeach
+ 
+   <div class="main-panel">
+          <div class="content-wrapper">
+          <table >
+            <tr style="background-color:skyblue;" >
+              <th style="padding:10px; font-size: 20px; color: white;">Customer Name</th>
+              <th style="padding:10px; font-size: 20px; color: white;">Email</th>
+              <th style="padding:10px; font-size: 20px; color: white;">phone</th>
+              <th style="padding:10px; font-size: 20px; color: white;">Doctor Name</th>
+              <th style="padding:10px; font-size: 20px; color: white;">Date</th>
+              <th style="padding:10px; font-size: 20px; color: white;">Message</th>
+              <th style="padding:10px; font-size: 20px; color: white;">Status</th>
+              <th style="padding:10px; font-size: 20px; color: white;">Approved</th>
+              <th style="padding:10px; font-size: 20px; color: white;">Canceled</th>
+              <th style="padding:10px; font-size: 20px; color: white;">Send Mail</th>
+            </tr>
 
-
-</table>
-</div>
+            @foreach($data as $appoint)
+            <tr style="background-color:#A7A7A7;" align="Center">
+              <td style="padding:10px; color: white;">{{$appoint->name}}</td>
+              <td style="padding:10px; color: white;">{{$appoint->email}}</td>
+              <td style="padding:10px; color: white;">{{$appoint->phone}}</td>
+              <td style="padding:10px; color: white;">{{$appoint->doctor}}</td>
+              <td style="padding:10px; color: white;">{{$appoint->date}}</td>
+              <td style="padding:10px; color: white;">{{$appoint->message}}</td>
+              <td style="padding:10px; color: white;">{{$appoint->status}}</td>
+              <td><a href="{{url('approved',$appoint->id)}}" onclick="return confirm('are you sure to Approve this?')" class="bt btn-success">Approved</a></td>
+              <td><a href="{{url('canceled',$appoint->id)}}" onclick="return confirm('are you sure to Cancel this?')" class="bt btn-danger">Canceled</a></td>
+              <td><a href="{{url('emailview',$appoint->id)}}" class="bt btn-primary">Send Mail</a></td>
+            </tr>
+            @endforeach
+          </table>
         </div>
+      </div>
+          
+    </div>
     <!-- container-scroller -->
-    <!-- plugins:js -->
     @include('admin.script')
-    <!-- End custom js for this page -->
   </body>
 </html>

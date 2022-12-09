@@ -10,21 +10,15 @@
 
   <title>One Health - Medical Center HTML5 Template</title>
 
-  <link rel="stylesheet" href="../assets/css/maicons.css">
+  <link rel="stylesheet" href="{{asset('/assets/css/maicons.css')}}">
 
-  <link rel="stylesheet" href="../assets/css/bootstrap.css">
+  <link rel="stylesheet" href="{{asset('/assets/css/bootstrap.css')}}">
 
-  <link rel="stylesheet" href="../assets/vendor/owl-carousel/css/owl.carousel.css">
+  <link rel="stylesheet" href="{{asset('/assets/vendor/owl-carousel/css/owl.carousel.css')}}">
 
-  <link rel="stylesheet" href="../assets/vendor/animate/animate.css">
+  <link rel="stylesheet" href="{{asset('/assets/vendor/animate/animate.css')}}">
 
-  <link rel="stylesheet" href="../assets/css/theme.css">
-  <style>
-      .display{
-          color: white;
-          align:center;
-      }
-  </style>
+  <link rel="stylesheet" href="{{asset('/assets/css/theme.css')}}">
 </head>
 <body>
 
@@ -56,7 +50,7 @@
 
     <nav class="navbar navbar-expand-lg navbar-light shadow-sm">
       <div class="container">
-        <a class="navbar-brand" href="#"><span class="text-primary">One</span>-Health</a>
+        <a class="navbar-brand" href="{{url('/')}}"><span class="text-primary">One</span>-Health</a>
 
         <form action="#">
           <div class="input-group input-navbar">
@@ -74,7 +68,7 @@
         <div class="collapse navbar-collapse" id="navbarSupport">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="index.html">Home</a>
+              <a class="nav-link" href="{{url('/')}}">Home</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="about.html">About Us</a>
@@ -89,74 +83,59 @@
               <a class="nav-link" href="contact.html">Contact</a>
             </li>
             @if(Route::has('login'))
-				
             @auth
             <li class="nav-item">
-              <a class="nav-link" style="background-color:rgb(47, 255, 141); color:white;" href="{{ url('myappointment') }}">My Appointment</a>
+              <a class="nav-link" style="background-color: greenyellow; color: white;" href="{{url('myappointment')}}">My Appointment</a>
             </li>
-            <li><x-app-layout>
 
-            </x-app-layout></li>
+            <x-app-layout>
+            </x-app-layout>
+
             @else
             <li class="nav-item">
-                <a class="btn btn-primary ml-lg-3" href="{{route('login')}}">Login</a>
-              </li>
-              <li class="nav-item">
-                  <a class="btn btn-primary ml-lg-3" href="{{ route('register') }}">Register</a>
-                </li>
-                @endauth
-				
-				@endif
+              <a class="btn btn-primary ml-lg-3" href="{{route('login')}}">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="btn btn-primary ml-lg-3" href="{{route('register')}}">Register</a>
+            </li>
+            @endauth
+            @endif
           </ul>
         </div> <!-- .navbar-collapse -->
       </div> <!-- .container -->
     </nav>
   </header>
+  <div align="Center" style="padding: 70px;">
+  	<table>
+  		<tr style="background-color:black;" align="Center">
+  			<th style="padding:10px; font-size: 20px; color: white;">Doctor Name</th>
+  			<th style="padding:10px; font-size: 20px; color: white;">Date</th>
+  			<th style="padding:10px; font-size: 20px; color: white;">Message</th>
+  			<th style="padding:10px; font-size: 20px; color: white;">Status</th>
+  			<th style="padding:10px; font-size: 20px; color: white;">Cancel Appointment</th>
+  		</tr>
 
-  <div>
-    <table bgcolor="black" align="center" id="table_id" class="display">
-        <thead>
-            <tr>
-                <th style="padding: 30px">Doctor name</th>
-                <th style="padding: 30px">Date</th>
-                <th style="padding: 30px">Message</th>
-                <th style="padding: 30px">Status</th>
-                <th style="padding: 30px">Appointment Control</th>
-            </tr>
-        </thead>
-       
-         @foreach ($appoint as $appoints)
-         <tbody style="padding: 7px;">
-            <tr align="center" style="color: wheat;" class="display">
-                <td>{{ $appoints->doctor }}</td>
-                <td>{{ $appoints->date }}</td>
-                <td>{{ $appoints->message }}</td>
-                <td>{{ $appoints->status }}</td>
-                <td><a href="{{ url('cancel_appointment', $appoints->id) }}" onclick="return confirm('Are you sure to delete this?')" class="btn btn-danger"> Cancel</a></td>
-                
-            </tr>
-         </tbody>
-        
-        @endforeach
-    </table>
-</div>
+  		@foreach($appoint as $appoints)
+  		<tr style="background-color:black;" align="Center">
+  			<td style="padding:10px; color: white;">{{$appoints->doctor}}</td>
+  			<td style="padding:10px; color: white;">{{$appoints->date}}</td>
+  			<td style="padding:10px; color: white;">{{$appoints->message}}</td>
+  			<td style="padding:10px; color: white;">{{$appoints->status}}</td>
+  			<td><a href="{{url('cancel_appoint',$appoints->id)}}" class="btn btn-danger" onclick="return confirm('are you sure to delete this?')">Cancel</a></td>
+  		</tr>
+  		@endforeach
+  	</table>
+  </div>
 
+<script src="{{asset('/assets/js/jquery-3.5.1.min.js')}}"></script>
 
+<script src="{{asset('/assets/js/bootstrap.bundle.min.js')}}"></script>
 
-<script src="../assets/js/jquery-3.5.1.min.js"></script>
+<script src="{{asset('/assets/vendor/owl-carousel/js/owl.carousel.min.js')}}"></script>
 
-<script src="../assets/js/bootstrap.bundle.min.js"></script>
+<script src="{{asset('/assets/vendor/wow/wow.min.js')}}"></script>
 
-<script src="../assets/vendor/owl-carousel/js/owl.carousel.min.js"></script>
-
-<script src="../assets/vendor/wow/wow.min.js"></script>
-
-<script src="../assets/js/theme.js"></script>
+<script src="{{asset('/assets/js/theme.js')}}"></script>
   
 </body>
 </html>
-<script type="text/javascript">
-    $(document).ready( function () {
-        $('#table_id').DataTable();
-    } );
-    </script>

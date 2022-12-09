@@ -1,86 +1,87 @@
-<x-app-layout>
-    <h1>admin</h1>
-    </x-app-layout>
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- Required meta tags -->
-    <style>
-        .text{
-            color: black !important;
-        }
-    </style>
     @include('admin.css')
+    <style type="text/css">
+    	label{
+    		display: inline-block;
+    		width: 200px;
+        color: white;
+    	}
+    </style>
   </head>
   <body>
     <div class="container-scroller">
-      
+        
       <!-- partial:partials/_sidebar.html -->
       @include('admin.sidebar')
       <!-- partial -->
       @include('admin.navbar')
         <!-- partial -->
-        <div class="container-fluid page-body-wrapper">
-            
-    <!-- Button trigger modal -->
-<button type="button" style="    height: 33px;" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Add Doctor
-  </button>
-  
-  <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Add Doctor</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <form action="{{ url('/upload_doctor') }}" method="post" enctype="multipart/form-data">
-                @csrf
-               
-                
-                <div>
-                   <label>Doctor name</label>
-                   <input type="text" class="text" name="name" placeholder="Write a name" required>
-               </div>
-               <div>
-                   <label>Phone number</label>
-                   <input type="text" class="text" name="phone" placeholder="Phone number" required>
-               </div>
-               <div>
-                <label>Speciality</label>
-                <select class="text" name="speciality">
-                    <option style="color:black;">--select--</option>
-                    <option value="skin" style="color:black;">skin</option>
-                    <option value="heart" style="color:black;">heart</option>
-                    <option value="eye" style="color:black;">eye</option>
-                    <option value="nose" style="color:black;">nose</option>
-                </select>
-            </div>
-               <div>
-                   <label>Image</label>
-                   <input type="file" name="image" required>
-               </div>
-               <div>
-                   <label>Room no</label>
-                   <input type="text" class="text" name="room" placeholder="Room no" required>
-                   <div>
-                    <button type="button" style="background:rgb(230, 230, 230); color:black;" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                       <input  class="btn btn-primary" type="submit" value="Save">
-                   </div>
-               </div>
-                
-            </form>
-        </div>
-      </div>
-    </div>
-  </div>
+ 
+  <div class="main-panel">
+          <div class="content-wrapper">
 
-        </div>
+ 
+      		  @if(session()->has('message'))
+
+            <div class="alert alert-success">
+
+             
+              
+              {{session()->get('message')}}
+              
+            </div>
+
+            @endif
+      		<form action="{{url('upload_doctor')}}" method="post" enctype="multipart/form-data">
+      			@csrf
+      			<div style="padding: 15px;">
+      				<label>Doctor Name</label>
+      				<input type="text" style="color:black;" name="name" placeholder="wrtie the name">
+      			</div>
+      			<div style="padding: 15px;">
+      				<label>Phone</label>
+      				<input type="number" style="color:black;" name="phone" placeholder="wrtie the number" required>
+      			</div>
+      			<div style="padding: 15px;">
+      				<label>Speciality</label>
+      				<select name="speciality" style="color:black; widows: 200px;" required>
+      					<option>--Select--</option>
+      					<option value="skin">skin</option>
+      					<option value="heart">heart</option>
+      					<option value="eye">eye</option>
+      					<option value="nose">nose</option>
+      				</select>
+      			</div>
+      			<div style="padding: 15px;">
+      				<label>Room No</label>
+      				<input type="text" style="color:black;" name="room" placeholder="wrtie the room number" required>
+      			</div>
+      			<div style="padding: 15px;">
+      				<label>Doctor Image</label>
+      				<input type="file" name="file" required>
+      			</div>
+      			<div style="padding: 15px;">
+      				<input type="submit" class="btn btn-success">
+      			</div>
+      		</form>
+      	</div>
+      </div>
+          
+    </div>
     <!-- container-scroller -->
-    <!-- plugins:js -->
     @include('admin.script')
-    <!-- End custom js for this page -->
+
+
+    <script type="text/javascript">
+      
+      $("document").ready(function(){
+    setTimeout(function(){
+       $("div.alert").remove();
+    }, 4000 ); // 3 secs
+
+});
+    </script>
   </body>
 </html>
